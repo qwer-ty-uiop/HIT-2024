@@ -107,17 +107,17 @@ public class ProxyServer {
                     // 创建传输通道
                     BufferedWriter serverWriter = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
                     BufferedInputStream serverReader = new BufferedInputStream(serverSocket.getInputStream());
-                    synchronized (clientSocket) {
-                        // 将客户端请求转发给目标服务器
-                        sendToServer(serverWriter);
-                        // 读取目标服务器的响应并转发给客户端
-                        printToBrowser(serverReader);
 
-                        serverWriter.close();
-                        serverReader.close();
+                    // 将客户端请求转发给目标服务器
+                    sendToServer(serverWriter);
+                    // 读取目标服务器的响应并转发给客户端
+                    printToBrowser(serverReader);
 
-                        System.out.println(Thread.currentThread().getName() + "网址: " + url + "响应成功！");
-                    }
+                    serverWriter.close();
+                    serverReader.close();
+
+                    System.out.println(Thread.currentThread().getName() + "网址: " + url + "响应成功！");
+
 
                 } catch (IOException e) {
                     System.out.println(Thread.currentThread().getName() + "目标服务器连接失败: " + e.getMessage());
