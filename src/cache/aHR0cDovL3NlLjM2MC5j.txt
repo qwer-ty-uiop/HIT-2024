@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Date: Sun, 13 Oct 2024 16:05:34 GMT
+Content-Type: binary/octet-stream
+Content-Length: 768
+Connection: keep-alive
+Etag: 20ac6e33e30c450459d37f4733a098e8
+Last-Modified: Fri, 27 Sep 2024 08:58:18 GMT
+X-Amz-Request-Id: 25b656b8-7cb6-11ef-bd37-a8494da6ca23
+Expires: Sun, 13 Oct 2024 17:05:34 GMT
+Cache-Control: s-maxage=3600
+KCS-Via: HIT from w-fc01.lnsyom;EXPIRED from w-sc06.bjwdt
+Accept-Ranges: bytes
+
+y7a2HN19w14unYQIl4/psKamBP2yvpplf+BGtYbUmIxN2kHvzR6O80UjtcNSoRvOPZi92kfiTKGidH+ONBlCyNUKp2fCMHPKM3PoRZUFcB2Gt8FyxJaKEci/cTmPzNteVwE3l10QfF4VeXzHvbAFVpm+An0Kenv/T3TOdEdPFcGitAOZtWw+nTCUthYcWWQnGwtVxc9czPnkfT5nKH+rRATqPG6roBp02IANKG7kN0V4UkxcRs9i8GU3ngdv/8wSBOSz7nILixrDEkxZJdEtA6HIuMtskmO/QN1gnaRuHUEkjGY7gL5OZ1H4vNFQdMOZQboaQSz5yrgsKvkTxmcWRB4HgFdN5Bk4pgY+R+XPhxViUEep/Wi7Kyj7jo4c9snhLdIHvDz3cNI0/dSlYAWZ0za4xjJ0dcToJYNwZUaiuA1qmqka7juH3PLbNK4eLn1OxGw6Wm8EE+zFTWZhzblE+r02QFi1Ez8ffrShJzf3q8/91I9sFUeg87jznbtG/4/0AJaW10E//zcUCpjELPmJjkfo+5VtEQLSoontmOCnwAuk7b9D+5Q3sxSoLh417jAACbsexqEyRXP0OoPrOjYajzmXhGNoAzZUVyAl2oVJPnf2h6yx3KHog2/XRK+eHaY/CswTjlTL7Zmm17teWqhN145WUIebeWdKd3li2vTY9H5n9NeAwVAFxpJLodwpZe5UnLgmxB5LD7V6tN7mv30OIc9CBFZ1CIm3Ak5WWkFZ8ZFRHHHy8t0s6/Zyn/p+rvi3
