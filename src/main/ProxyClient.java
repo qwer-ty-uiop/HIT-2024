@@ -17,13 +17,25 @@ public class ProxyClient implements Runnable {
     private String fileName;
     private static final Set<String> bannedGroups = new HashSet<>();
     private static final Map<String, String> steerSite = new ConcurrentHashMap<>();
+    private static final Map<String, String> lastModifiedMap = new ConcurrentHashMap<>();
 
     {
         // 被禁止访问的网址
         bannedGroups.add("example.com");
-        bannedGroups.add("microsoft.com");
         // 钓鱼网址
-        steerSite.put("jwes.hit.edu.cn", "today.hit.edu.cn");
+        steerSite.put("jwes.hit.edu.cn", "jwts.hit.edu.cn");
+        // 初始化记录的 Last-Modified 的时间
+        try {
+            FileReader fileReader = new FileReader("src\\cache\\lastModified.txt");
+            char[] line = new char[1024];
+            int len;
+            while ((len = fileReader.read(line)) != -1) {
+                String[] splits = Arrays.toString(line).split("=");
+                lastModifiedMap.put(splits[0], splits[1]);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ProxyClient(Socket clientSocket) {
@@ -37,10 +49,10 @@ public class ProxyClient implements Runnable {
             // 预处理请求
             processMessage(inFromClient);
 
-            // 检查网址是否被禁，只看权威域名（二级域名）和顶级域名（一级域名）
-            if (bannedGroups.contains(serverHost.substring(serverHost.lastIndexOf(".", serverHost.lastIndexOf(".") - 1) + 1))) {
+            // 检查网址是否被禁
+            if (bannedGroups.contains(serverHost)) {
                 PrintWriter outToClient = new PrintWriter(socket.getOutputStream(), true);
-                outToClient.println("<h1> 403 forbidden: 该网站被禁止访问 <h1>");
+                outToClient.println("<h1> 403 forbidden: This site has been banned <h1>");
                 System.out.println("该网站被禁止访问" + serverHost);
                 return;
             }
@@ -54,14 +66,18 @@ public class ProxyClient implements Runnable {
                 sendToClient(serverSocket);
                 System.out.println(url + " 响应成功！");
             } catch (IOException e) {
-                throw new Exception(e);
+//                throw new Exception(e);
             }
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             try {
+                FileWriter fileWriter = new FileWriter("src\\cache\\lastModified.txt");
+                for (Map.Entry<String, String> e : lastModifiedMap.entrySet())
+                    fileWriter.write(e.getKey() + "=" + e.getValue() + "\n");
                 socket.close();
+                fileWriter.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -73,9 +89,8 @@ public class ProxyClient implements Runnable {
         OutputStream outToBrowser = socket.getOutputStream();
 
         byte[] response = new byte[1024];
-        int len = inFromServer.read(response, 0, 20);
+        int len = inFromServer.read(response, 0, 15);
         String responseHead = new String(response, 0, len);
-
         synchronized (ProxyClient.class) {
             System.out.println("url: " + url);
             System.out.println("\n========= start ===========");
@@ -92,13 +107,25 @@ public class ProxyClient implements Runnable {
             fis.close();
         } else {
             System.out.println(url + " 未使用缓存或还没有缓存");
-            // 创建缓存
+            // 创建缓存文件
             FileOutputStream fos = new FileOutputStream(fileName);
             do {
+                // 获取 Last-Modified 响应
+                String responseData = new String(response, 0, len);
+                if (responseData.contains("Last-Modified")) {
+                    // 更新该网站的 Last-Modified
+                    String[] splits = responseData.split("\r\n");
+                    for (String line : splits) {
+                        if (line.startsWith("Last-Modified:")) {
+                            lastModifiedMap.put(serverHost, line.substring("Last-Modified:".length()));
+                            break;
+                        }
+                    }
+                }
+                // 写入cache和浏览器
                 outToBrowser.write(response, 0, len);
                 fos.write(response, 0, len);
             } while ((len = inFromServer.read(response)) != -1);
-
         }
         outToBrowser.flush();
     }
@@ -106,15 +133,17 @@ public class ProxyClient implements Runnable {
     private void sendToServer(Socket serverSocket) throws IOException {
         BufferedWriter outToServer = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
         File cacheFile = new File(fileName);
-        String lastModified = "Thu, 01 Jul 1970 20:00:00 GMT";
+        // 获取缓存的lastModified时间
+        String lastModified = lastModifiedMap.getOrDefault(serverHost, "Thu, 01 Jul 1990 20:00:00 GMT");
+        // 没有缓存就加上默认的时间
+        if (!lastModifiedMap.containsKey(serverHost))
+            lastModifiedMap.put(serverHost, lastModified);
         if (cacheFile.exists() && cacheFile.length() != 0) {
             SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-            lastModified = formatter.format(new Date(cacheFile.lastModified()));
             System.out.println(url + " 的缓存存在，最后修改时间为：" + lastModified);
-        } else System.out.println(url + "还没有缓存");
-
-        String request = requestMethod + " " + url + " HTTP/1.1" + "\r\n" + "HOST: " + url.getHost() + "\n" + "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n" + "Accept-Encoding:gzip, deflate, sdch\n" + "Accept-Language:zh-CN,zh;q=0.8\n" + "If-Modified-Since: " + lastModified + "\n" + "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.2 Safari/605.1.15\n" + "Encoding:UTF-8\n" + "Connection:keep-alive" + "\n" + "\n";
+        } else System.out.println(url + " 还没有缓存");
+        String request = requestMethod + " " + url + " HTTP/1.1" + "\r\n" + "HOST: " + url.getHost() + "\n" + "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n" + "Accept-Encoding:gzip, deflate, sdch\n" + "Accept-Language:zh-CN,zh;q=0.8\n" + "Cache-Control: max-age=600\n" + "If-Modified-Since: " + lastModified + "\n" + "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.2 Safari/605.1.15\n" + "Encoding:UTF-8\n" + "Connection:keep-alive" + "\n" + "\n";
 
         outToServer.write(request);
         outToServer.flush();
@@ -128,6 +157,7 @@ public class ProxyClient implements Runnable {
         if (path.contains("https")) path = path.replace("https", "http");
         if (!path.contains("http")) path = "http://" + path;
         url = new URL(path);
+        // cache 文件名
         fileName = "src\\cache\\" + Base64.getUrlEncoder().encodeToString(url.toString().getBytes()).substring(0, 20) + ".txt";
         serverHost = url.getHost();
         serverPort = url.getPort() == -1 ? 80 : url.getPort();

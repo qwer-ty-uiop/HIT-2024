@@ -21,7 +21,7 @@ public class ProxyServer {
         while (true) {
             // 与客户端的socket
             Socket clientSocket = serverSocket.accept();
-            clientSocket.setSoTimeout(5000);
+//            clientSocket.setSoTimeout(5000);
             // 检查该客户端是否被禁止访问
             System.out.println("客户端：" + clientSocket.getInetAddress());
             if (bannedUsers.contains(clientSocket.getInetAddress().getHostAddress())) {
