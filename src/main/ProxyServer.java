@@ -11,7 +11,7 @@ public class ProxyServer {
     private static final Set<String> bannedUsers = new HashSet<>();
 
     static {
-//        bannedUsers.add("127.0.0.1"); // 本机演示用这个演示
+        bannedUsers.add("127.0.0.1"); // 本机演示用这个演示
         bannedUsers.add("127.0.0.2");
     }
 

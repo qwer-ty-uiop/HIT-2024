@@ -93,6 +93,7 @@ public class ProxyClient implements Runnable {
         byte[] response = new byte[1024];
         int len = inFromServer.read(response, 0, 32);
         String responseHead = new String(response, 0, len);
+        // 打印 http 状态码信息出来看一下
         synchronized (ProxyClient.class) {
             System.out.println("url: " + url);
             System.out.println("\n========= start ===========");
