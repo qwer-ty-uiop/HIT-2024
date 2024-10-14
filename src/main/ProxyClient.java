@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class ProxyClient implements Runnable {
-    private Socket socket;
+    private final Socket socket;
     private String requestMethod;
     private URL url;
     private String serverHost;
@@ -19,22 +19,23 @@ public class ProxyClient implements Runnable {
     private static final Map<String, String> steerSite = new ConcurrentHashMap<>();
     private static final Map<String, String> lastModifiedMap = new ConcurrentHashMap<>();
 
-    {
+    static {
         // 被禁止访问的网址
         bannedGroups.add("example.com");
         // 钓鱼网址
         steerSite.put("jwes.hit.edu.cn", "jwts.hit.edu.cn");
         // 初始化记录的 Last-Modified 的时间
-        try {
-            FileReader fileReader = new FileReader("src\\cache\\lastModified.txt");
-            char[] line = new char[1024];
-            int len;
-            while ((len = fileReader.read(line)) != -1) {
-                String[] splits = Arrays.toString(line).split("=");
-                lastModifiedMap.put(splits[0], splits[1]);
+        try (FileReader fileReader = new FileReader("src\\cache\\lastModified.txt")) {
+            // 刚开始运行，还没有初始化（static的初始化一次就够了）
+            if (lastModifiedMap.isEmpty()) {
+                char[] line = new char[1024];
+                while (fileReader.read(line) != -1) {
+                    String[] splits = Arrays.toString(line).split("=");
+                    lastModifiedMap.put(splits[0], splits[1]);
+                }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("还没有缓存文件" + e.getMessage());
         }
     }
 
@@ -73,13 +74,14 @@ public class ProxyClient implements Runnable {
             throw new RuntimeException(e);
         } finally {
             try {
+                // 运行完毕，将更新的 lastModified 文件写入 cache，方便下次启动 server 的时候能够正常运行
                 FileWriter fileWriter = new FileWriter("src\\cache\\lastModified.txt");
                 for (Map.Entry<String, String> e : lastModifiedMap.entrySet())
                     fileWriter.write(e.getKey() + "=" + e.getValue() + "\n");
                 socket.close();
                 fileWriter.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                //
             }
         }
     }
