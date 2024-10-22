@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9ac2abdb-4a62-4dac-a54e-d3cb2deb577b" name="更改" comment="" />
+    <list default="true" id="9ac2abdb-4a62-4dac-a54e-d3cb2deb577b" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +21,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -28,6 +35,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -39,10 +47,10 @@
     "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true",
     "应用程序.Client.executor": "Run",
-    "应用程序.Server.executor": "Debug"
+    "应用程序.Server.executor": "Run"
   }
 }]]></component>
-  <component name="RunManager" selected="应用程序.Server">
+  <component name="RunManager" selected="应用程序.Client">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ty.acceptance1.Client" />
       <module name="NetworkLab2" />
@@ -71,8 +79,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="应用程序.Server" />
         <item itemvalue="应用程序.Client" />
+        <item itemvalue="应用程序.Server" />
       </list>
     </recent_temporary>
   </component>
@@ -95,7 +103,7 @@
       <workItem from="1728541890893" duration="10000" />
       <workItem from="1728542012056" duration="2372000" />
       <workItem from="1728658588921" duration="28000" />
-      <workItem from="1729576925434" duration="12435000" />
+      <workItem from="1729576925434" duration="13658000" />
     </task>
     <servers />
   </component>
@@ -103,20 +111,6 @@
     <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java</url>
-          <line>78</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="baseIterator" />

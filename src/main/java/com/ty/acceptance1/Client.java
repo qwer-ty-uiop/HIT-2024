@@ -21,13 +21,13 @@ public class Client {
         InetAddress serverAddress = InetAddress.getByName("localhost");
         int expectedSeqNum = 0;
         Random random = new Random(); // 模拟丢包
-        int packetCount = 0;
         while (true) {
             byte[] receive = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receive, receive.length);
             clientSocket.receive(receivePacket);
             int len = receivePacket.getLength();
             String receivedData = new String(receivePacket.getData(), 0, len);
+            String data = receivedData.split("\t")[0];
             // 获取seqNum
             int seqNum;
             if (receivedData.contains("sequenceNumber="))
@@ -38,10 +38,10 @@ public class Client {
             }
 
             String date = new SimpleDateFormat().format(new Date());
-            System.out.println("接收数据包=" + packetCount + "\t序列号=" + seqNum + "\t时间=" + date);
+            System.out.println("接收数据包=" + data + "\t序列号=" + seqNum + "\t时间=" + date);
             // 模拟丢包
             if (random.nextDouble() < LOSS_PROBABILITY) {
-                System.out.println("数据包" + packetCount + "-" + seqNum + "丢包");
+                System.out.println("数据包" + data + "-" + seqNum + "丢包");
                 continue;
             }
             // 发送ack
@@ -52,9 +52,8 @@ public class Client {
                 clientSocket.send(ackPacket);
                 System.out.println("发送ACK=" + ack);
                 expectedSeqNum = (expectedSeqNum + 1) % SEQ_NUM_LIMIT;
-                packetCount++;
             } else {
-                System.out.println("乱序到达，丢弃数据包=" + packetCount + "\t序列号=" + seqNum + "\t期望序列号=" + expectedSeqNum);
+                System.out.println("乱序到达，丢弃数据包=" + data + "\t序列号=" + seqNum + "\t期望序列号=" + expectedSeqNum);
             }
         }
     }
