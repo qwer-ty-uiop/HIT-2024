@@ -32,10 +32,10 @@ public class Server {
             // 尽可能发送packet
             while ((nextSeqNum - base + SEQ_NUM_LIMIT) % SEQ_NUM_LIMIT < WINDOW_SIZE && packetsIterator < DATA_PACKETS.length) {
                 // send_pkt()
-                String data = DATA_PACKETS[packetsIterator] + "\tdataPacketNumber=" + packetsIterator + "\tsequenceNumber=" + nextSeqNum;
+                String data = DATA_PACKETS[packetsIterator] + "\tsequenceNumber=" + nextSeqNum + "\tdataPacketNumber=" + packetsIterator;
                 DatagramPacket sendPacket = new DatagramPacket(data.getBytes(), data.getBytes().length, clientAddress, CLIENT_PORT);
                 serverSocket.send(sendPacket);
-                System.out.println("发送数据包" + packetsIterator + "\t序列号=" + nextSeqNum + "\t时间=" + System.currentTimeMillis());
+                System.out.println("发送数据包" + (packetsIterator + 1) + "\t序列号=" + nextSeqNum + "\t时间=" + System.currentTimeMillis());
                 // start_timer
                 if (base == nextSeqNum) {
                     startTimer();

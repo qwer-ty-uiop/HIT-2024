@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ac2abdb-4a62-4dac-a54e-d3cb2deb577b" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src/document/input/test.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Head.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/UDPs.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +33,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2nEcsiptfabL1hrEiE6pptkE7Pa" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -47,10 +55,16 @@
     "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true",
     "应用程序.Client.executor": "Run",
-    "应用程序.Server.executor": "Run"
+    "应用程序.Server.executor": "Run",
+    "应用程序.com.ty.acceptance2.Server.executor": "Debug"
   }
 }]]></component>
-  <component name="RunManager" selected="应用程序.Client">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\idea\IdeaProjects\NetworkLab2\src\document\input" />
+    </key>
+  </component>
+  <component name="RunManager" selected="应用程序.com.ty.acceptance2.Server">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ty.acceptance1.Client" />
       <module name="NetworkLab2" />
@@ -77,8 +91,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="com.ty.acceptance2.Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.ty.acceptance2.Server" />
+      <module name="NetworkLab2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ty.acceptance2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="应用程序.com.ty.acceptance2.Server" />
         <item itemvalue="应用程序.Client" />
         <item itemvalue="应用程序.Server" />
       </list>
@@ -103,7 +131,9 @@
       <workItem from="1728541890893" duration="10000" />
       <workItem from="1728542012056" duration="2372000" />
       <workItem from="1728658588921" duration="28000" />
-      <workItem from="1729576925434" duration="13658000" />
+      <workItem from="1729576925434" duration="15750000" />
+      <workItem from="1729651966995" duration="9715000" />
+      <workItem from="1729668701127" duration="4398000" />
     </task>
     <servers />
   </component>
@@ -111,9 +141,21 @@
     <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance2/UDPs.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="baseIterator" />
+        <watch expression="head.getNextSeqNum()" />
+        <watch expression="head.getBase()" />
+        <watch expression="head.getPacketsIterator()" language="JAVA" />
+        <watch expression="head.getBaseIterator()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

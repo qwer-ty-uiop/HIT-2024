@@ -30,9 +30,10 @@ public class Client {
             String data = receivedData.split("\t")[0];
             // 获取seqNum
             int seqNum;
-            if (receivedData.contains("sequenceNumber="))
-                seqNum = Integer.parseInt(receivedData.substring(receivedData.indexOf("sequenceNumber=") + "sequenceNumber=".length()));
-            else {
+            if (receivedData.contains("sequenceNumber=")) {
+                String sequenceNumber = receivedData.split("\t")[1];
+                seqNum = Integer.parseInt(sequenceNumber.substring(sequenceNumber.indexOf("sequenceNumber=") + "sequenceNumber=".length()));
+            } else {
                 System.out.println("数据包损坏");
                 continue;
             }
