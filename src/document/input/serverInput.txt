@@ -1,0 +1,25 @@
+server server input
+123asd456789123
+u)(&()!@#$*_sd123
+123456789               *_sd123
+                        123456789
+    *_sd123
+    123456789
+    qwertyuiop      qwertyuiop
+qwertyuiop
+asdfghjkl
+zxcvbnm     *_sd123
+            123456789
+            qwertyuiop
+0123456789*_sd123
+          123456789*_sd123
+                   123456789
+                   qwertyuiop
+          qwertyuiop
+*_sd123
+123456789
+qwertyuiop         *_sd123
+         123456789
+*_sd123
+123456789
+qwertyuiop

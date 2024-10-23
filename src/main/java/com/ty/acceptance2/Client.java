@@ -1,36 +1,25 @@
 package com.ty.acceptance2;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Client {
     private static final Head head = new Head();
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException, InterruptedException {
         InetAddress targetAddress = InetAddress.getByName("localhost");
         int targetPort = Head.SERVER_PORT;
         head.setSocket("client");
-        // 输入传输文件的路径
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("输入想要传输文件的路径: ");
-        head.setFileInputPath(scanner.nextLine());
-        File file = new File(scanner.nextLine());
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        // 获取数据
-        List<String> data = new ArrayList<>();
-        String line;
-        while ((line = reader.readLine()) != null)
-            data.add(line);
-        // 开始传输
-        while (head.getBaseIterator() < data.size()) {
-            UDPs.send(data, head, targetAddress, targetPort);
-            UDPs.waitForACK(head);
-        }
-        System.out.println("传输完毕！");
+        head.setFileInputPath("src/document/input/clientInput.txt");
+        head.setFileOutputPath("src/document/output/clientReceived.txt");
+        GBN gbn = new GBN(head);
+
+        // 客户端接收数据
+        gbn.receive();
+        // 客户端发数据
+        List<String> data = head.getData();
+        gbn.send(data,targetAddress,targetPort);
+        System.exit(0);
     }
 }

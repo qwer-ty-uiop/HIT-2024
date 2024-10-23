@@ -27,6 +27,10 @@ public class Client {
             clientSocket.receive(receivePacket);
             int len = receivePacket.getLength();
             String receivedData = new String(receivePacket.getData(), 0, len);
+            if ("Finish".equals(receivedData)) {
+                System.out.println("传输完成");
+                System.exit(0);
+            }
             String data = receivedData.split("\t")[0];
             // 获取seqNum
             int seqNum;

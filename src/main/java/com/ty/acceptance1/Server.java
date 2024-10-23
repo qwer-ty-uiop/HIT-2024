@@ -67,8 +67,11 @@ public class Server {
                 packetsIterator = baseIterator;
             }
         }
-        serverSocket.close();
+        byte[] data = "Finish".getBytes();
+        DatagramPacket datagramPacket = new DatagramPacket(data, data.length, InetAddress.getByName("localhost"), CLIENT_PORT);
+        serverSocket.send(datagramPacket);
         System.out.println("传输完成");
+        serverSocket.close();
         System.exit(0);
     }
 

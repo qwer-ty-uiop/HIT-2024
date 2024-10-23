@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ac2abdb-4a62-4dac-a54e-d3cb2deb577b" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src/document/input/test.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Head.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/UDPs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/document/input/serverInput.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/document/input/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/document/input/clientInput.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance1/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Head.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Head.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/UDPs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/GBN.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,12 +53,13 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true",
     "应用程序.Client.executor": "Run",
     "应用程序.Server.executor": "Run",
-    "应用程序.com.ty.acceptance2.Server.executor": "Debug"
+    "应用程序.com.ty.acceptance2.Client.executor": "Run",
+    "应用程序.com.ty.acceptance2.Server.executor": "Run"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -91,6 +94,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="com.ty.acceptance2.Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.ty.acceptance2.Client" />
+      <module name="NetworkLab2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ty.acceptance2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="com.ty.acceptance2.Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ty.acceptance2.Server" />
       <module name="NetworkLab2" />
@@ -107,8 +123,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="应用程序.com.ty.acceptance2.Server" />
-        <item itemvalue="应用程序.Client" />
+        <item itemvalue="应用程序.com.ty.acceptance2.Client" />
         <item itemvalue="应用程序.Server" />
+        <item itemvalue="应用程序.Client" />
       </list>
     </recent_temporary>
   </component>
@@ -133,7 +150,7 @@
       <workItem from="1728658588921" duration="28000" />
       <workItem from="1729576925434" duration="15750000" />
       <workItem from="1729651966995" duration="9715000" />
-      <workItem from="1729668701127" duration="4398000" />
+      <workItem from="1729668701127" duration="21732000" />
     </task>
     <servers />
   </component>
@@ -143,11 +160,10 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance2/UDPs.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="31" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -156,6 +172,7 @@
         <watch expression="head.getBase()" />
         <watch expression="head.getPacketsIterator()" language="JAVA" />
         <watch expression="head.getBaseIterator()" language="JAVA" />
+        <watch expression="receiveData.split(&quot;\t&quot;)[1].split(&quot;time=&quot;)[1]" />
       </configuration>
     </watches-manager>
   </component>
