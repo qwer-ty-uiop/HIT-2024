@@ -9,6 +9,10 @@ public class Server {
         SR sr = new SR(9999, "server");
         sr.setTargetHost(InetAddress.getLocalHost());
         sr.setTargetPort(7777);
-        sr.send("", sr.getTargetHost(), 7777);
+        // Server发送信息给Client
+        sr.send("", sr.getTargetHost(), sr.getTargetPort());
+        // Server接收Client的信息
+        sr.receive("");
+        System.exit(0);
     }
 }

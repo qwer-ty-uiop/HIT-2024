@@ -17,22 +17,22 @@ public class SR {
     public static final int RECEIVE_WINDOW_SIZE = 8;
     public static final int SEQ_NUM_LIMIT = 16; // 接收窗口 + 发送窗口 <= 序列号数量
     public static final int PACKET_SIZE = 1024;
-    public static final int TIMEOUT = 30000;
+    public static final int TIMEOUT = 1000;
     public static final double LOSS_PROBABILITY = 0.2;
 
     private final DatagramSocket socket;
-    private final String[] receiveWindow = new String[RECEIVE_WINDOW_SIZE]; // 接收窗口
-    private final Timer[] timers = new Timer[SEND_WINDOW_SIZE]; // 窗口每个数据包都要用一个timer，这几个窗口都用循环的方式记录
-    private final boolean[] isACK = new boolean[SEND_WINDOW_SIZE]; // 记录哪些被接收了
+    private final String[] receiveWindow = new String[SEQ_NUM_LIMIT]; // 接收窗口
+    private final Timer[] timers = new Timer[SEQ_NUM_LIMIT]; // 窗口每个数据包都要用一个timer
+    private final boolean[] isACK = new boolean[SEQ_NUM_LIMIT]; // 记录哪些被接收了
     private final List<String> dataSet = new ArrayList<>();
 
     private String fileInputPath;
     private String fileOutputPath;
-    private int base = 0;
-    private int nextSeq = 0;
-    private int receiveBase = 0;
-    private int baseIndex = 0;
-    private int nextIndex = 0;
+    private int base = 0;           // 发送窗口基址
+    private int nextSeq = 0;        // 发送窗口边缘
+    private int receiveBase = 0;    // 接收窗口基址
+    private int baseIndex = 0;      // 数据数组剩余数据的基址(对应base)
+    private int nextIndex = 0;      // 数据数组索引(对应nextSeq)
     private InetAddress targetHost;
     private int targetPort;
 
@@ -54,10 +54,10 @@ public class SR {
 
             while (true) {
                 ReceiveMessage receiveMessage = new ReceiveMessage();
-                int seq = receiveMessage.getSeq();
-                int seqBase = receiveMessage.getBase();
-                long time = receiveMessage.getTime();
-                String data = receiveMessage.getData();
+                int seq = receiveMessage.seq;
+                int seqBase = receiveMessage.base;
+                long time = receiveMessage.time;
+                String data = receiveMessage.data;
                 // 传输结束通知
                 if ("Finish".equals(data)) {
                     System.err.println("传输完成");
@@ -71,17 +71,16 @@ public class SR {
                 System.out.println("收到数据:\tseq=" + seq + "\tsendTime=" + time + "\tdata=" + data);
                 // 发送ACK
                 sendACK(seq, seqBase);
-                // 收到的序列号在窗口内
-                if ((seq - receiveBase + SEQ_NUM_LIMIT) % SEQ_NUM_LIMIT < RECEIVE_WINDOW_SIZE) {
-                    // 缓存分组
-                    receiveWindow[(seq - receiveBase + SEQ_NUM_LIMIT) % SEQ_NUM_LIMIT] = data;
-                }
+                // 收到的序列号在窗口内，则缓存分组。不在窗口内的数据都是已经接受过的了
+                if ((seq - receiveBase + SEQ_NUM_LIMIT) % SEQ_NUM_LIMIT < RECEIVE_WINDOW_SIZE)
+                    receiveWindow[seq] = data;
                 // 按序输出
                 while (receiveWindow[receiveBase] != null) {
                     out.write(receiveWindow[receiveBase].getBytes());
                     out.write("\n".getBytes());
+                    out.flush();
                     receiveWindow[receiveBase] = null;
-                    receiveBase = (receiveBase + 1) % RECEIVE_WINDOW_SIZE;
+                    receiveBase = (receiveBase + 1) % SEQ_NUM_LIMIT;
                 }
             }
         } catch (Exception e) {
@@ -179,7 +178,7 @@ public class SR {
             socket.send(dataPacket);
             System.out.println("发送数据包:\tseq=" + nextSeq + "\tbase=" + base + "\ttime=" + System.currentTimeMillis() + "\tdata=" + dataSet.get(nextIndex));
             // 每个数据包又要用一个计时器监控
-            startTimer((nextSeq - base + SEQ_NUM_LIMIT) % SEQ_NUM_LIMIT);
+            startTimer(nextSeq, base, baseIndex);
             nextSeq = (nextSeq + 1) % SEQ_NUM_LIMIT;
             nextIndex++;
         }
@@ -190,14 +189,13 @@ public class SR {
      */
     private void waitForACK() {
         ReceiveMessage receiveMessage = new ReceiveMessage();
-        System.out.println("收到ACK消息:\tseqNum=" + receiveMessage.getSeq() + "\tbase=" + receiveMessage.getBase() + "\ttime=" + receiveMessage.getTime());
-        // 关闭计时器
-        int index = (receiveMessage.getSeq() - receiveMessage.getBase() + SEQ_NUM_LIMIT) % SEQ_NUM_LIMIT;
-        stopTimer(index);
+        System.out.println("收到ACK消息:\tseqNum=" + receiveMessage.seq + "\tbase=" + receiveMessage.base + "\ttime=" + receiveMessage.time);
+        // 关闭计时器，缓存ack
+        stopTimer(receiveMessage.seq);
+        isACK[receiveMessage.seq] = true;
         // 更新base、数据集合指针和发送窗口
-        isACK[index] = true;
-        for (int i = 0; i < SEND_WINDOW_SIZE && isACK[i]; i++) {
-            isACK[i] = false;
+        while (isACK[base]) {
+            isACK[base] = false;
             base = (base + 1) % SEQ_NUM_LIMIT;
             baseIndex++;
         }
@@ -216,13 +214,14 @@ public class SR {
     }
 
     /**
-     * 重发数据打包
+     * 打包要发送的数据包(重传时用)
      *
      * @param seq  序列号
-     * @param data 数据
-     * @return 数据包
+     * @param base 基址
+     * @param data 传输的数据包的字节数组
+     * @return 打包好的数据包
      */
-    private DatagramPacket makePacket(int seq, String data) {
+    private DatagramPacket makePacket(int seq, int base, String data) {
         // 添加seq等信息
         byte[] dataBytes = ("seq=" + seq + "\tbase=" + base + "\ttime=" + System.currentTimeMillis() + "\tdata=" + data).getBytes();
         return new DatagramPacket(dataBytes, dataBytes.length, targetHost, targetPort);
@@ -241,22 +240,23 @@ public class SR {
     /**
      * 开启计时器
      *
-     * @param index 窗口中相对base的偏移量
+     * @param seq       当前序列号
+     * @param base      当前基址，用于找dataSet中的数据
+     * @param baseIndex 当前数据包在集合中的基地址
      */
-    private void startTimer(int index) {
-        stopTimer(index); // 确保这个timer可以被正常调用
-        timers[index].schedule(new TimerTask() {
+    private void startTimer(int seq, int base, int baseIndex) {
+        stopTimer(seq); // 确保这个timer可以被正常调用
+        timers[seq].schedule(new TimerTask() {
             @Override
             public void run() {
-                // 求在数据集合的索引
-                int dataIndex = baseIndex + index;
-                System.out.println("超时重传:\tseq=" + index + "\tdata=" + dataSet.get(dataIndex));
-                try { // 重传
-                    socket.send(makePacket(index, dataSet.get(dataIndex)));
-                    startTimer(index);
+                int dataIndex = baseIndex + seq - base;
+                System.out.println("超时重传:\tseq=" + seq + "\tbase=" + base + "\ttime=" + System.currentTimeMillis() + "\tdata=" + dataSet.get(dataIndex));
+                try {
+                    DatagramPacket sendPacket = makePacket(seq, base, dataSet.get(dataIndex));
+                    socket.send(sendPacket);
+                    startTimer(seq, base, baseIndex);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-//                    System.err.println(e.getMessage());
                 }
             }
         }, TIMEOUT);
@@ -265,13 +265,13 @@ public class SR {
     /**
      * 停止计时器
      *
-     * @param index 窗口中的偏移量
+     * @param seq 当前序列号
      */
-    private void stopTimer(int index) {
-        if (timers[index] != null) {
-            timers[index].cancel();
-            timers[index].purge();
-            timers[index] = new Timer();
+    private void stopTimer(int seq) {
+        if (timers[seq] != null) {
+            timers[seq].cancel();
+            timers[seq].purge();
+            timers[seq] = new Timer();
         }
     }
 
@@ -287,6 +287,13 @@ public class SR {
         this.targetHost = targetHost;
     }
 
+    public int getTargetPort() {
+        return this.targetPort;
+    }
+
+    /**
+     * 处理收到的数据
+     */
     private class ReceiveMessage {
         int seq;
         int base;
@@ -307,26 +314,6 @@ public class SR {
             base = Integer.parseInt(dataPackets[1].split("=")[1]);
             time = Long.parseLong(dataPackets[2].split("=")[1]);
             data = dataPackets.length > 3 ? dataPackets[3].split("=")[1] : "";
-        }
-
-        public int getSeq() {
-            return seq;
-        }
-
-        public void setSeq(int seq) {
-            this.seq = seq;
-        }
-
-        public int getBase() {
-            return base;
-        }
-
-        public long getTime() {
-            return time;
-        }
-
-        public String getData() {
-            return data;
         }
 
     }

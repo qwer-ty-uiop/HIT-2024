@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ac2abdb-4a62-4dac-a54e-d3cb2deb577b" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/questions.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/document/input/clientInput.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/document/input/clientInput.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/document/input/serverInput.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/document/input/serverInput.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/questions.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/questions.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +59,7 @@
     "应用程序.com.ty.acceptance2.Client.executor": "Run",
     "应用程序.com.ty.acceptance2.Server.executor": "Run",
     "应用程序.com.ty.acceptance3.Client.executor": "Run",
-    "应用程序.com.ty.acceptance3.Server.executor": "Debug"
+    "应用程序.com.ty.acceptance3.Server.executor": "Run"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -172,7 +168,7 @@
       <workItem from="1729765188675" duration="402000" />
       <workItem from="1729776065275" duration="16786000" />
       <workItem from="1729829348921" duration="961000" />
-      <workItem from="1729830496952" duration="7216000" />
+      <workItem from="1729830496952" duration="12719000" />
     </task>
     <servers />
   </component>
@@ -192,8 +188,18 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java</url>
-          <line>305</line>
-          <option name="timeStamp" value="89" />
+          <line>126</line>
+          <option name="timeStamp" value="119" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java</url>
+          <line>127</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="121" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
