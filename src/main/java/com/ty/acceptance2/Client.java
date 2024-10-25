@@ -12,7 +12,7 @@ public class Client {
         int targetPort = Head.SERVER_PORT;
         head.setSocket("client");
         head.setFileInputPath("src/document/input/clientInput.txt");
-        head.setFileOutputPath("src/document/output/clientReceived.txt");
+        head.setFileOutputPath("src/document/output/GBNClientReceived.txt");
         GBN gbn = new GBN(head);
 
         // 客户端接收数据

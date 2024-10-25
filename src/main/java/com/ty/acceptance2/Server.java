@@ -12,7 +12,7 @@ public class Server {
         int targetPort = Head.CLIENT_PORT;
         head.setSocket("server");
         head.setFileInputPath("src/document/input/serverInput.txt");
-        head.setFileOutputPath("src/document/output/serverReceived.txt");
+        head.setFileOutputPath("src/document/output/GBNServerReceived.txt");
         GBN gbn = new GBN(head);
         // 服务器发数据
         List<String> data = head.getData();
