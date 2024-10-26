@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ac2abdb-4a62-4dac-a54e-d3cb2deb577b" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/GBN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance2/GBN.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/questions.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ty/acceptance3/questions.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,29 +40,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.Client.executor": "Run",
-    "应用程序.Server.executor": "Run",
-    "应用程序.com.ty.acceptance2.Client.executor": "Run",
-    "应用程序.com.ty.acceptance2.Server.executor": "Run",
-    "应用程序.com.ty.acceptance3.Client.executor": "Run",
-    "应用程序.com.ty.acceptance3.Server.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/idea/IdeaProjects/NetworkLab2/src/document/input&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.Client.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.Server.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.com.ty.acceptance2.Client.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.com.ty.acceptance2.Server.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.com.ty.acceptance3.Client.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.com.ty.acceptance3.Server.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\idea\IdeaProjects\NetworkLab2\src\document\input" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\idea\IdeaProjects\NetworkLab2\src\document\input" />
     </key>
@@ -168,12 +172,28 @@
       <workItem from="1729765188675" duration="402000" />
       <workItem from="1729776065275" duration="16786000" />
       <workItem from="1729829348921" duration="961000" />
-      <workItem from="1729830496952" duration="12719000" />
+      <workItem from="1729830496952" duration="18031000" />
+      <workItem from="1729928222272" duration="2543000" />
+      <workItem from="1729943010360" duration="4347000" />
+      <workItem from="1729957028733" duration="1882000" />
+      <workItem from="1729959429787" duration="1062000" />
+      <workItem from="1729961684255" duration="200000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -187,19 +207,9 @@
           <option name="timeStamp" value="47" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java</url>
-          <line>126</line>
-          <option name="timeStamp" value="119" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java</url>
-          <line>127</line>
-          <option name="timeStamp" value="120" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance3/SR.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="121" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/ty/acceptance2/GBN.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

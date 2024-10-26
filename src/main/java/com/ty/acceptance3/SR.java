@@ -84,8 +84,10 @@ public class SR {
                 }
             }
         } catch (Exception e) {
+//            System.err.println(e.getMessage());
             e.printStackTrace();
         }
+
     }
 
     /**
@@ -241,20 +243,20 @@ public class SR {
      * 开启计时器
      *
      * @param seq       当前序列号
-     * @param base      当前基址，用于找dataSet中的数据
+     * @param seqBase   当前基址，用于找dataSet中的数据
      * @param baseIndex 当前数据包在集合中的基地址
      */
-    private void startTimer(int seq, int base, int baseIndex) {
+    private void startTimer(int seq, int seqBase, int baseIndex) {
         stopTimer(seq); // 确保这个timer可以被正常调用
         timers[seq].schedule(new TimerTask() {
             @Override
             public void run() {
-                int dataIndex = baseIndex + seq - base;
-                System.out.println("超时重传:\tseq=" + seq + "\tbase=" + base + "\ttime=" + System.currentTimeMillis() + "\tdata=" + dataSet.get(dataIndex));
+                int dataIndex = baseIndex + seq - seqBase;
+                System.out.println("超时重传:\tseq=" + seq + "\tbase=" + seqBase + "\ttime=" + System.currentTimeMillis() + "\tdata=" + dataSet.get(dataIndex));
                 try {
-                    DatagramPacket sendPacket = makePacket(seq, base, dataSet.get(dataIndex));
+                    DatagramPacket sendPacket = makePacket(seq, seqBase, dataSet.get(dataIndex));
                     socket.send(sendPacket);
-                    startTimer(seq, base, baseIndex);
+                    startTimer(seq, seqBase, baseIndex);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

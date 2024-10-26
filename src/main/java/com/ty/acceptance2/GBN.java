@@ -81,7 +81,7 @@ public class GBN {
                 // 传输结束，退出
                 if ("Finish".equals(data)) {
                     System.err.println("传输结束");
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                     return;
                 }
                 // 模拟丢包
