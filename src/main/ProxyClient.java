@@ -3,21 +3,21 @@ package main;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 public class ProxyClient implements Runnable {
-    private final Socket socket;
-    private String requestMethod;
-    private URL url;
-    private String serverHost;
-    private int serverPort;
-    private String fileName;
-    private static final Set<String> bannedGroups = new HashSet<>();
-    private static final Map<String, String> steerSite = new ConcurrentHashMap<>();
-    private static final Map<String, String> lastModifiedMap = new ConcurrentHashMap<>();
+
+    private final Socket socket;    // 客户端与代理服务器连接的socket
+    private String requestMethod;   // 客户端请求头的请求方法
+    private URL url;                // 客户端请求访问的网址
+    private String serverHost;      // 网址的 Host 部分
+    private int serverPort;         // 访问网址的端口
+    private String fileName;        // 用于存储浏览器缓存的文件名，用base64编码
+    private static final Set<String> bannedGroups = new HashSet<>();    // 被 ban 的网页
+    private static final Map<String, String> steerSite = new ConcurrentHashMap<>();     // 钓鱼网站映射
+    private static final Map<String, String> lastModifiedMap = new ConcurrentHashMap<>();   // 存储网站的lastModified时间
 
     static {
         // 被禁止访问的网址
@@ -39,6 +39,7 @@ public class ProxyClient implements Runnable {
         }
     }
 
+    // 获取与代理服务器连接的 socket
     public ProxyClient(Socket clientSocket) {
         socket = clientSocket;
     }
@@ -49,6 +50,8 @@ public class ProxyClient implements Runnable {
         try (BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             // 预处理请求
             processMessage(inFromClient);
+            // 为了实验结果方便查看，手动禁止 microsoft.com 及其子网站(不然太慢了时间来不及)
+            if (serverHost.contains("microsoft.com")) return;
 
             // 检查网址是否被禁
             if (bannedGroups.contains(serverHost)) {
@@ -86,22 +89,27 @@ public class ProxyClient implements Runnable {
         }
     }
 
+    /**
+     * 发送数据给客户端（浏览器）
+     *
+     * @param serverSocket 代理服务器连接服务器的socket
+     */
     private void sendToClient(Socket serverSocket) throws IOException {
         BufferedInputStream inFromServer = new BufferedInputStream(serverSocket.getInputStream());
         OutputStream outToBrowser = socket.getOutputStream();
 
         byte[] response = new byte[1024];
-        int len = inFromServer.read(response, 0, 32);
+        int len = inFromServer.read(response, 0, 12);
         String responseHead = new String(response, 0, len);
         // 打印 http 状态码信息出来看一下
         synchronized (ProxyClient.class) {
             System.out.println("url: " + url);
             System.out.println("\n========= start ===========");
-            System.out.println(serverHost + " responseHead: \n" + responseHead.substring(0, responseHead.lastIndexOf("\r")));
+            System.out.println(serverHost + " responseHead: \n" + responseHead);
             System.out.println("=========== end =========");
         }
         if (responseHead.contains("304")) {
-            System.out.println(url + " 使用缓存");
+            System.out.println(url + " 使用缓存，缓存命中");
             // 从缓存写入
             FileInputStream fis = new FileInputStream(fileName);
             while ((len = fis.read(response)) != -1) {
@@ -133,25 +141,32 @@ public class ProxyClient implements Runnable {
         outToBrowser.flush();
     }
 
+    /**
+     * 将客户端请求发送给服务端
+     *
+     * @param serverSocket 代理服务器连接服务器的socket
+     */
     private void sendToServer(Socket serverSocket) throws IOException {
         BufferedWriter outToServer = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
-        File cacheFile = new File(fileName);
         // 获取缓存的lastModified时间
         String lastModified = lastModifiedMap.getOrDefault(serverHost, "Thu, 01 Jul 1990 20:00:00 GMT");
-        // 没有缓存就加上默认的时间
-        if (!lastModifiedMap.containsKey(serverHost))
+        // 还没有缓存就加上默认的时间
+        if (!lastModifiedMap.containsKey(serverHost)) {
             lastModifiedMap.put(serverHost, lastModified);
-        if (cacheFile.exists() && cacheFile.length() != 0) {
-            SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH);
-            formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-            System.out.println(url + " 的缓存存在，最后修改时间为：" + lastModified);
-        } else System.out.println(url + " 还没有缓存");
+            System.out.println(url + " 还没有缓存，缓存未命中");
+        } else System.out.println(url + " 的缓存存在，最后修改时间为：" + lastModified);
+
         String request = requestMethod + " " + url + " HTTP/1.1" + "\r\n" + "HOST: " + url.getHost() + "\n" + "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n" + "Accept-Encoding:gzip, deflate, sdch\n" + "Accept-Language:zh-CN,zh;q=0.8\n" + "Cache-Control: max-age=600\n" + "If-Modified-Since: " + lastModified + "\n" + "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.2 Safari/605.1.15\n" + "Encoding:UTF-8\n" + "Connection:keep-alive" + "\n" + "\n";
 
         outToServer.write(request);
         outToServer.flush();
     }
 
+    /**
+     * 处理来自客户端的请求，获取基本信息和目标服务器地址
+     *
+     * @param inFromClient 来自客户端的请求
+     */
     private void processMessage(BufferedReader inFromClient) throws IOException {
         // 先处理请求行
         String line = inFromClient.readLine();
@@ -160,7 +175,7 @@ public class ProxyClient implements Runnable {
         if (path.contains("https")) path = path.replace("https", "http");
         if (!path.contains("http")) path = "http://" + path;
         url = new URL(path);
-        // cache 文件名
+        // cache 文件名，用base64编码，防止出现违规文件命名
         fileName = "src\\cache\\" + Base64.getUrlEncoder().encodeToString(url.toString().getBytes()).substring(0, 20) + ".txt";
         serverHost = url.getHost();
         serverPort = url.getPort() == -1 ? 80 : url.getPort();

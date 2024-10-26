@@ -11,7 +11,7 @@ public class ProxyServer {
     private static final Set<String> bannedUsers = new HashSet<>();
 
     static {
-        bannedUsers.add("127.0.0.1"); // 本机演示用这个演示
+//        bannedUsers.add("127.0.0.1"); // 本机演示用这个演示
         bannedUsers.add("127.0.0.2");
     }
 
@@ -19,9 +19,9 @@ public class ProxyServer {
         ServerSocket serverSocket = new ServerSocket(8888);
         System.out.println("------------------- 代理服务器启动：8888-------------------");
         while (true) {
-            // 与客户端的socket
+            // 与客户端的socket连接
             Socket clientSocket = serverSocket.accept();
-//            clientSocket.setSoTimeout(5000);
+
             // 检查该客户端是否被禁止访问
             System.out.println("客户端：" + clientSocket.getInetAddress());
             if (bannedUsers.contains(clientSocket.getInetAddress().getHostAddress())) {
